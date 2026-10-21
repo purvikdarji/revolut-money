@@ -1,0 +1,403 @@
+/* src/index.css – Tailwind v4 entry + design tokens */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+/* ─── Tailwind v4 Theme (CSS-first) ────────────────────────────────── */
+@theme {
+  /* Brand greens */
+  --color-brand-green: #00773E;
+  --color-brand-deep:  #032B1A;
+  --color-brand-50:  #F1F8F4;
+  --color-brand-100: #DFEEE7;
+  --color-brand-400: #34C27A;
+  --color-brand-500: #0E9A55;
+  --color-brand-600: #00773E;
+  --color-brand-700: #005F31;
+  --color-brand-800: #074726;
+  --color-brand-900: #032B1A;
+  --color-brand-950: #021B10;
+
+  /* Gold */
+  --color-gold-300:  #E6CC8A;
+  --color-gold-500:  #C9A24B;
+
+  /* Ink */
+  --color-ink-400:   #6E8578;
+  --color-ink-600:   #3F5A4C;
+  --color-ink-900:   #0A1F16;
+
+  /* Surfaces */
+  --color-line:      #DCE8E1;
+  --color-mist:      #F6FAF7;
+
+  /* Fonts */
+  --font-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-inter:   'Inter', system-ui, sans-serif;
+  --font-family-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-family-body:    'Inter', system-ui, sans-serif;
+  --font-family-gu:      'Noto Sans Gujarati', system-ui, sans-serif;
+
+  /* Border radius */
+  --radius-card:  28px;
+  --radius-input: 16px;
+  --radius-pill:  9999px;
+
+  /* Letter spacing */
+  --letter-spacing-eyebrow: 0.28em;
+}
+
+/* ─── CSS Custom Properties (runtime) ──────────────────────────────── */
+:root {
+  --logo-h-header: 44px;
+  --logo-h-header-scrolled: 36px;
+  --logo-auto: var(--color-brand-600); /* default */
+}
+
+@media (max-width: 767px) {
+  :root {
+    --logo-h-header: 34px;
+    --logo-h-header-scrolled: 30px;
+  }
+}
+
+/* Surface Contexts for Logo */
+[data-surface="light"],
+[data-surface="mist"] {
+  --logo-auto: var(--color-brand-600);
+}
+[data-surface="dark"],
+[data-surface="brand"] {
+  --logo-auto: #FFFFFF;
+}
+
+:root {
+  /* Brand greens */
+  --brand-50:  #F1F8F4;
+  --brand-100: #DFEEE7;
+  --brand-400: #34C27A;
+  --brand-500: #0E9A55;
+  --brand-600: #00773E;
+  --brand-700: #005F31;
+  --brand-800: #074726;
+  --brand-900: #032B1A;
+  --brand-950: #021B10;
+
+  /* Gold */
+  --gold-300:  #E6CC8A;
+  --gold-500:  #C9A24B;
+
+  /* Ink */
+  --ink-900:   #0A1F16;
+  --ink-600:   #3F5A4C;
+  --ink-400:   #6E8578;
+
+  /* Surfaces */
+  --line:      #DCE8E1;
+  --mist:      #F6FAF7;
+  --white:     #FFFFFF;
+
+  /* Gradients */
+  --gradient-hero: radial-gradient(ellipse at 20% 60%, #005F31 0%, transparent 55%),
+                   radial-gradient(ellipse at 80% 20%, #0E9A55 0%, transparent 45%),
+                   #032B1A;
+  --gradient-cta:  linear-gradient(135deg, #00773E 0%, #0E9A55 100%);
+
+  /* Fonts */
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-gu:      'Noto Sans Gujarati', system-ui, sans-serif;
+
+  /* Radius */
+  --radius-card:   28px;
+  --radius-input:  16px;
+  --radius-pill:   9999px;
+  --radius-sm:     8px;
+
+  /* Shadows */
+  --shadow-card:   0 24px 60px -24px rgba(0, 119, 62, .35);
+  --shadow-glow:   0 0 40px rgba(52, 194, 122, .25);
+  --shadow-md:     0 8px 24px rgba(10, 31, 22, .12);
+  --shadow-sm:     0 2px 8px rgba(10, 31, 22, .08);
+
+  /* Glass */
+  --glass-bg:      rgba(255, 255, 255, .60);
+  --glass-border:  rgba(255, 255, 255, .40);
+  --glass-blur:    16px;
+
+  /* Section spacing */
+  --section-y:    clamp(4rem, 8vw, 8rem);
+  --section-y-sm: clamp(2rem, 4vw, 4rem);
+
+  /* Container */
+  --container-max: 1280px;
+  --container-px:  clamp(1rem, 4vw, 2rem);
+
+  /* Transitions */
+  --ease-smooth:   cubic-bezier(.4, 0, .2, 1);
+  --ease-spring:   cubic-bezier(.34, 1.56, .64, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 3px rgba(0, 119, 62, .45);
+}
+
+/* ─── Reset & Base ──────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 16px; /* Phase UI-8: min 16px body, prevents iOS zoom */
+    color: var(--ink-900);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.7; /* comfortable reading line-height */
+    /* Use dynamic viewport height to avoid browser chrome overlap */
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: inherit;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  img, svg { display: block; max-width: 100%; }
+  button, input, select, textarea { font-family: inherit; font-size: inherit; }
+}
+
+/* ─── Selection ─────────────────────────────────────────────────────── */
+::selection { background: var(--brand-400); color: white; }
+
+/* ─── Focus ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--mist); }
+::-webkit-scrollbar-thumb { background: var(--brand-400); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-600); }
+
+/* ─── Fluid typography scale ────────────────────────────────────────── */
+.h1 { font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.h2 { font-size: clamp(1.75rem, 3.5vw + .5rem, 3rem);  font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.h3 { font-size: clamp(1.25rem, 2vw + .5rem, 2rem);    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.h4 { font-size: clamp(1.1rem, 1.5vw + .25rem, 1.5rem);font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+
+/* ─── Eyebrow ────────────────────────────────────────────────────────── */
+.eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--brand-600);
+}
+
+/* ─── Utilities ──────────────────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.gradient-text {
+  background: var(--gradient-cta);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-cta-gradient { background: var(--gradient-cta); }
+.bg-hero-mesh    { background: var(--gradient-hero); }
+
+/* Safe area */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* Scroll progress */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gradient-cta);
+  z-index: 9999;
+  transition: width .1s linear;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@utility animate-marquee {
+  animation: marquee 30s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+@utility animate-marquee-reverse {
+  animation: marquee-reverse 30s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+@keyframes shine {
+  100% { left: 200%; }
+}
+
+@utility animate-shine {
+  animation: shine 1.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee, .animate-marquee-reverse {
+    animation: none !important;
+    transform: none !important;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Gujarati font */
+:lang(gu), .font-gu { font-family: var(--font-gu); }
+
+/* ─── Tailwind utility overrides ─────────────────────────────────────── */
+@utility ease-smooth {
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
+@utility ease-spring {
+  transition-timing-function: cubic-bezier(.34,1.56,.64,1);
+}
+@utility rounded-card {
+  border-radius: var(--radius-card);
+}
+@utility rounded-input {
+  border-radius: var(--radius-input);
+}
+@utility rounded-pill {
+  border-radius: var(--radius-pill);
+}
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+@utility shadow-md {
+  box-shadow: var(--shadow-md);
+}
+@utility tracking-eyebrow {
+  letter-spacing: 0.28em;
+}
+@utility font-display {
+  font-family: var(--font-display);
+}
+@utility font-body {
+  font-family: var(--font-body);
+}
+@utility font-gu {
+  font-family: var(--font-gu);
+}
+
+/* Phase 7 page styles */
+@import "./styles/phase7.css";
+
+/* Phase 8.5 image system */
+@import "./styles/images.css";
+
+/* Why section (WhyChooseUs) */
+@import "./styles/why-section.css";
+
+/* Phase UI-2 visual foundations */
+@import "./styles/foundations.css";
+
+/* Phase UI-3 layout patterns */
+@import "./styles/ui3.css";
+
+/* Phase UI-4 component upgrades */
+@import "./styles/ui4.css";
+
+/* Phase UI-5 motion utilities */
+@import "./styles/ui5.css";
+
+/* Phase UI-5 premium visual polish */
+@import "./styles/ui5-polish.css";
+
+/* Phase UI-8 mobile-first */
+@import "./styles/ui8.css";
+
+/* ─── Scrollbar hide utility ──────────────────────────────────────────── */
+@utility scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ─── Safe area utilities ──────────────────────────────────────────────── */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@utility pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+@utility pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* ─── Performance utilities ───────────────────────────────────────────── */
+@utility content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}

@@ -1,0 +1,575 @@
+/*
+ * src/styles/ui3.css — Phase UI-3 Layout Patterns
+ *
+ * Rules:
+ *   - Only locked tokens (rgba of existing only)
+ *   - No new hues
+ *   - All content-affecting grid changes: min 320px mobile first
+ *   - Gujarati: no letter-spacing, no uppercase transforms, lh ≥ 1.65
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO — Offset frame outline + scrolling trust ticker
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Offset rounded-square frame behind the hero image */
+.hero-frame-outline {
+  position: absolute;
+  inset: -16px -16px 16px 16px;
+  border-radius: 40px;
+  border: 1.5px solid rgba(52,194,122,.22);    /* brand-400/22% */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Second, slightly-inset glow frame */
+.hero-frame-glow {
+  position: absolute;
+  inset: 8px 8px -8px -8px;
+  border-radius: 36px;
+  border: 1px solid rgba(52,194,122,.10);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero image wrapper with the frame motif */
+.hero-img-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Trust ticker — scrolling horizontal bar below the hero CTAs */
+.trust-ticker {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.trust-ticker-mask {
+  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  overflow: hidden;
+  flex: 1;
+}
+
+.trust-ticker-inner {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: ticker-scroll 28s linear infinite;
+}
+
+.trust-ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.75);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  flex-shrink: 0;
+}
+
+.trust-ticker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-400);
+  flex-shrink: 0;
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trust-ticker-inner { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATS STRIP — Tabular-numeral frame tiles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.stat-frame-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem 1rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-align: center;
+  gap: 0.375rem;
+  transition: background 200ms, border-color 200ms;
+}
+.stat-frame-tile:hover {
+  background: rgba(255,255,255,.10);
+  border-color: rgba(52,194,122,.35);
+}
+
+/* Gold accent tile for a key number */
+.stat-frame-tile--gold {
+  background: rgba(201,162,75,.08);
+  border-color: rgba(201,162,75,.25);
+}
+.stat-frame-tile--gold:hover {
+  background: rgba(201,162,75,.14);
+  border-color: rgba(201,162,75,.50);
+}
+
+.stat-frame-num {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stat-frame-num span {
+  background: linear-gradient(
+    to right,
+    #ffffff 20%,
+    var(--brand-400) 40%,
+    var(--gold-500) 60%,
+    #ffffff 80%
+  );
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine-gradient 3s linear infinite;
+  display: inline-block;
+}
+
+@keyframes shine-gradient {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.stat-frame-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(220,232,225,.70);    /* line/70% */
+  line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOAN CATEGORIES — Bento grid with featured first tile
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.loan-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* All cards equal width — no spanning */
+.loan-bento-grid > * {
+  min-height: 240px;
+}
+
+/* Spotlight hover — radial brand-400 glow from cursor position */
+.loan-card-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.loan-card-spotlight::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(52,194,122,.10) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 300ms;
+  z-index: 0;
+  top: var(--spotlight-y, 50%);
+  left: var(--spotlight-x, 50%);
+}
+.loan-card-spotlight:hover::after {
+  opacity: 1;
+}
+
+/* Keep all loan card content above the spotlight */
+.loan-card-spotlight > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile: horizontal snap rail */
+@media (max-width: 639px) {
+  .loan-bento-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    scrollbar-width: none;
+    /* Add slight negative margin and padding to allow scroll bleed */
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+  }
+  .loan-bento-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .loan-bento-grid > * {
+    width: 85vw;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+  }
+  /* No column overrides on mobile snap rail */
+}
+
+/* Tablet: 2-col, first still spans both */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .loan-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROCESS TIMELINE — Sticky heading + numbered rings
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Sticky side panel (desktop: left col, mobile: normal flow) */
+.process-sticky-panel {
+  position: sticky;
+  top: 7rem;    /* clears the fixed header */
+  align-self: flex-start;
+  height: fit-content;
+}
+
+/* Numbered ring node on the timeline */
+.process-ring-node {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;  /* rounded-square motif */
+  border: 2px solid var(--brand-400);
+  background: var(--brand-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-400);
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(52,194,122,.20);
+}
+
+/* Progress line segment between nodes */
+.process-line-seg {
+  position: absolute;
+  top: 52px;
+  left: 26px;    /* center of node (52/2 - 0.5px) */
+  width: 2px;
+  background: rgba(52,194,122,.18);
+  bottom: 0;
+  transform-origin: top;
+}
+
+.process-line-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--brand-400);
+  transform-origin: top;
+  box-shadow: 0 0 12px rgba(52,194,122,.40);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARTNER MARQUEE — Edge fade masks
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.marquee-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left and right fade masks from page background */
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(40px, 8vw, 100px);
+  z-index: 10;
+  pointer-events: none;
+}
+.marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, #FFFFFF, transparent);
+}
+.marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, #FFFFFF, transparent);
+}
+
+/* Logo pill enhancement — slight elevation + reveal on hover */
+.partner-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--surface-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--elev-1);
+  min-width: 200px;
+  height: 88px;
+  flex-shrink: 0;
+  transition: box-shadow 220ms, border-color 220ms, transform 220ms;
+}
+.partner-pill:hover {
+  box-shadow: var(--elev-2);
+  border-color: var(--brand-100);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FAQ — Two-column: sticky category sidebar + accordion list
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.faq-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Category sidebar */
+.faq-sidebar {
+  position: sticky;
+  top: 7rem;
+}
+
+.faq-cat-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.625rem 0.875rem;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+  white-space: normal;
+  line-height: 1.4;
+}
+.faq-cat-btn:hover {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+.faq-cat-btn.active {
+  background: var(--brand-100);
+  color: var(--brand-700);
+}
+
+/* Accordion enhancements — left accent bar on open */
+.faq-item {
+  background: var(--surface-card);
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: border-color 200ms, box-shadow 200ms;
+}
+.faq-item.is-open {
+  border-color: var(--brand-100);
+  box-shadow: var(--elev-1);
+}
+/* Left accent bar — appears when open */
+.faq-item.is-open::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--brand-600);
+  border-radius: 3px 0 0 3px;
+}
+.faq-item {
+  position: relative;
+}
+
+/* Mobile: sidebar collapses to a horizontal scroll pill bar */
+@media (max-width: 767px) {
+  .faq-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .faq-sidebar {
+    position: static;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+  }
+  .faq-sidebar::-webkit-scrollbar { display: none; }
+  .faq-cat-btn {
+    white-space: nowrap;
+    width: auto;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line);
+    background: var(--surface-card);
+    flex-shrink: 0;
+  }
+  .faq-cat-btn.active {
+    background: var(--brand-100);
+    border-color: var(--brand-200, var(--brand-100));
+    color: var(--brand-700);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER — Large watermark mark + back-to-top with progress ring
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.footer-watermark {
+  position: absolute;
+  bottom: 0;
+  right: -2%;
+  width: clamp(220px, 30vw, 420px);
+  opacity: 0.04;
+  pointer-events: none;
+  user-select: none;
+  filter: brightness(0) invert(1);  /* white watermark */
+}
+
+/* Back-to-top button with SVG progress ring */
+.back-to-top {
+  position: fixed;
+  bottom: max(2rem, env(safe-area-inset-bottom, 2rem));
+  right: 1.5rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--elev-2);
+  transition: background 200ms, transform 200ms, opacity 200ms;
+  opacity: 0;
+  pointer-events: none;
+}
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: var(--brand-700);
+  transform: translateY(-2px);
+}
+.back-to-top:active {
+  transform: translateY(0);
+}
+
+/* SVG ring overlay on top of the button */
+.back-to-top-ring {
+  position: absolute;
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: rotate(-90deg);   /* start from top */
+}
+
+.back-to-top-ring-track {
+  fill: none;
+  stroke: rgba(255,255,255,.20);
+  stroke-width: 2;
+}
+
+.back-to-top-ring-fill {
+  fill: none;
+  stroke: var(--brand-400);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 100ms linear;
+}
+
+/* Hide FloatingElements whatsapp bubble overlap at bottom (they use bottom: 6rem) */
+@media (max-width: 767px) {
+  .back-to-top {
+    bottom: 6.5rem;   /* clear floating WhatsApp button */
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION — General rhythm helpers
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Section that follows a dark section — negative-margin overlap card bridge */
+.section-bridge {
+  margin-top: -2.5rem;
+  position: relative;
+  z-index: 5;
+}
+
+/* Inner page header — consistent across LoanDetail, Tools, Legal, etc. */
+.page-header-band {
+  background: var(--brand-900);
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(5rem, 10vw, 8rem) clamp(3rem, 6vw, 5rem);
+}
+
+.page-header-band::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -10%;
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52,194,122,.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .trust-ticker-inner { animation: none !important; }
+  .partner-pill       { transition: none; }
+  .back-to-top        { transition: opacity 1ms; }
+}

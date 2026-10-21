@@ -1,0 +1,641 @@
+/**
+ * src/styles/why-section.css
+ *
+ * Styles for the "Loans, simplified" / WhyChooseUs section only.
+ * Uses design tokens (spacing 8px scale, brand colours, radius tokens).
+ * All motion: transform + opacity only.
+ * Reduced-motion overrides at the end.
+ *
+ * Breakpoints:
+ *   Desktop  ≥ 1024px
+ *   Tablet   768–1023px
+ *   Mobile   < 768px
+ */
+
+/* ── Section wrapper ────────────────────────────────────────────────────────── */
+
+.why-section {
+  padding: 96px 0;
+  background: var(--color-mist, #F6FAF7);
+  position: relative;
+  overflow: hidden;        /* keeps frame border inside viewport */
+}
+
+/* ── Row 1: Header ──────────────────────────────────────────────────────────── */
+
+.why-header {
+  max-width: 640px;
+  margin-bottom: 56px;
+}
+
+.why-eyebrow {
+  font-size: 0.75rem;             /* 12px */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-brand-600, #00773E);
+  margin: 0 0 12px;
+}
+
+.why-heading {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--color-ink-900, #0D1D13);
+  margin: 0;
+}
+
+/* ── Row 2: Main grid ───────────────────────────────────────────────────────── */
+
+.why-main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: stretch;
+}
+
+@media (min-width: 1024px) {
+  .why-main-grid {
+    grid-template-columns: 7fr 5fr;
+    gap: 24px;
+  }
+}
+
+/* ── Feature cards grid (left column) ──────────────────────────────────────── */
+
+.why-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;     /* mobile: 1 col */
+  grid-auto-rows: 1fr;            /* all rows equal height */
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .why-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Fix Reveal wrappers breaking grid auto height */
+.why-cards-grid > div,
+.why-cards-grid > div > div {
+  height: 100%;
+}
+
+/* ── Feature card ───────────────────────────────────────────────────────────── */
+
+.why-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #DCE8E1;
+  border-radius: 16px;              /* card radius token */
+  box-shadow: 0 1px 4px rgba(3, 43, 26, 0.05);
+  transition: box-shadow 0.25s ease;
+  cursor: default;                  /* not interactive */
+  height: 100%;                     /* fill the grid row */
+}
+
+.why-card:hover {
+  box-shadow: 0 4px 16px rgba(3, 43, 26, 0.10);
+}
+
+@media (max-width: 767px) {
+  .why-card {
+    padding: 20px;
+  }
+}
+
+.why-card-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-brand-50, #E8F5EE);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-brand-600, #00773E);
+  margin-bottom: 0;
+}
+
+.why-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.why-card-title {
+  font-size: 1.0625rem;            /* 17px */
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-ink-900, #0D1D13);
+  margin: 0 0 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.why-card-desc {
+  font-size: 0.875rem;              /* 14px */
+  line-height: 1.6;
+  color: var(--color-ink-600, #3D5A45);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Gujarati: allow 3 title lines; no uppercase */
+:lang(gu) .why-card-title {
+  -webkit-line-clamp: 3;
+  line-height: 1.65;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:lang(gu) .why-card-desc {
+  line-height: 1.65;
+}
+
+/* ── Photo column (right) ───────────────────────────────────────────────────── */
+
+.why-photo-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stretches photo to match the card-grid height on desktop */
+@media (min-width: 1024px) {
+  .why-photo-col {
+    height: 100%;
+  }
+  
+  /* Make sure Reveal inner div stretches */
+  .why-photo-col > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.why-photo-frame-outer {
+  position: relative;
+  /* Reserve aspect ratio for CLS prevention (overridden on desktop) */
+  aspect-ratio: 4 / 5;
+  flex: 1 1 auto;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .why-photo-frame-outer {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (min-width: 1024px) {
+  .why-photo-frame-outer {
+    aspect-ratio: unset;
+    height: 100%;
+    min-height: 400px;
+  }
+}
+
+/* Offset outline frame — 2px brand-400, 10px offset, same radius */
+.why-photo-frame-border {
+  position: absolute;
+  /* Clamped inset so it never clips at 320px */
+  inset: -8px;
+  border-radius: 30px;
+  border: 2px solid var(--color-brand-400, #34C27A);
+  pointer-events: none;
+  z-index: 0;
+  /* Draw-on reveal handled by parent Reveal (opacity animation) */
+}
+
+@media (max-width: 360px) {
+  .why-photo-frame-border {
+    inset: -4px;
+  }
+}
+
+.why-photo-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 22px;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background: var(--color-brand-100, #C2E6D0);
+}
+
+.why-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  background: var(--color-brand-50, #E8F5EE);
+}
+
+.why-photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;       /* keep faces visible */
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  display: block;
+}
+
+.why-photo-img--loaded {
+  opacity: 1;
+}
+
+/* ── Chips ──────────────────────────────────────────────────────────────────── */
+
+.why-chip {
+  position: absolute;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(3, 43, 26, 0.14);
+  white-space: nowrap;
+  max-width: calc(100% - 32px);    /* never exceeds frame */
+}
+
+/* At very narrow widths chips wrap text instead of overflowing */
+@media (max-width: 360px) {
+  .why-chip {
+    white-space: normal;
+    max-width: calc(100% - 24px);
+  }
+}
+
+.why-chip-icon {
+  flex-shrink: 0;
+  color: var(--color-brand-600, #00773E);
+}
+
+.why-chip-text {
+  font-size: 0.8125rem;            /* 13px */
+  font-weight: 600;
+  color: var(--color-ink-900, #0D1D13);
+  line-height: 1.3;
+}
+
+/* Chip A: bottom-left, 16px from edge */
+.why-chip--a {
+  bottom: 16px;
+  left: 16px;
+}
+
+/* Chip B: bottom-right, 16px from edge */
+.why-chip--b {
+  bottom: 16px;
+  right: 16px;
+}
+
+/* Stack chips vertically on narrow widths */
+@media (max-width: 479px) {
+  .why-chip--a {
+    bottom: 56px;                  /* above chip-b */
+  }
+  .why-chip--b {
+    bottom: 16px;
+    left: 16px;
+    right: auto;
+  }
+}
+
+/* ── Illustrative caption ───────────────────────────────────────────────────── */
+
+.why-illustrative-caption {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 0.8125rem;            /* 13px — meets 4.5:1 on mist */
+  color: var(--color-ink-600, #3D5A45);
+  margin-top: 12px;
+  line-height: 1.4;
+}
+
+/* ── Row 3: Comparison wrapper ──────────────────────────────────────────────── */
+
+.why-comparison-wrap {
+  margin-top: 48px;
+}
+
+.why-comparison-card {
+  position: relative;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--brand-900) 0%, var(--brand-800) 100%);
+  padding: 40px;
+  overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .why-comparison-card {
+    padding: 24px;
+  }
+}
+
+.why-comparison-glow {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(52, 194, 122, 0.12);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.why-comparison-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Comparison table (desktop / tablet) ────────────────────────────────────── */
+
+.why-cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  display: table;                  /* hide on mobile via media query */
+}
+
+@media (max-width: 767px) {
+  .why-cmp-table {
+    display: none;
+  }
+}
+
+.why-cmp-caption-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+/* Column widths: label 22%, alone 34%, revolut 44% */
+.why-cmp-col-label   { width: 22%; }
+.why-cmp-col-alone   { width: 34%; }
+.why-cmp-col-revolut { width: 44%; }
+
+.why-cmp-th {
+  padding: 0 16px 20px;
+  text-align: left;
+  font-size: 1rem;                /* 16px */
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: bottom;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.why-cmp-th--label {
+  padding-left: 0;
+  color: transparent;             /* visually hidden column */
+}
+
+.why-cmp-th--alone {
+  color: rgba(255,255,255,0.65);
+}
+
+.why-cmp-th--revolut {
+  color: #ffffff;
+  background: rgba(255,255,255,0.06);
+  border-top: 2px solid var(--color-brand-400, #34C27A);
+  border-radius: 8px 8px 0 0;
+  padding-top: 16px;
+}
+
+.why-cmp-revolut-th-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.why-cmp-revolut-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-brand-400, #34C27A);
+  flex-shrink: 0;
+  animation: revolut-dot-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes revolut-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.why-cmp-row {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.why-cmp-row:last-child {
+  border-bottom: none;
+}
+
+.why-cmp-td {
+  padding: 18px 16px;
+  font-size: 1rem;                /* 16px — min 15px per spec */
+  line-height: 1.55;
+  vertical-align: top;
+}
+
+.why-cmp-td--label {
+  padding-left: 0;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.50);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+:lang(gu) .why-cmp-td--label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.why-cmp-td--alone {
+  color: rgba(255,255,255,0.80);
+}
+
+.why-cmp-td--revolut {
+  color: #ffffff;
+  background: rgba(255,255,255,0.06);
+}
+
+.why-cmp-cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Icon circles */
+.why-cmp-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.why-cmp-icon--neg {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.60);
+}
+
+.why-cmp-icon--pos {
+  background: rgba(52,194,122,0.16);
+  color: #34C27A;
+}
+
+/* ── Comparison table: Gujarati ─────────────────────────────────────────────── */
+
+:lang(gu) .why-cmp-th {
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.65;
+}
+
+:lang(gu) .why-cmp-td {
+  line-height: 1.65;
+}
+
+/* ── Comparison: mobile stacked cards ───────────────────────────────────────── */
+
+.why-cmp-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .why-cmp-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.why-cmp-mobile-row {
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+}
+
+.why-cmp-mobile-label {
+  padding: 10px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.50);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin: 0;
+}
+
+:lang(gu) .why-cmp-mobile-label {
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.65;
+}
+
+.why-cmp-mobile-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.why-cmp-mobile-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px;
+  font-size: 0.9375rem;            /* 15px */
+  line-height: 1.5;
+  color: rgba(255,255,255,0.80);
+}
+
+.why-cmp-mobile-col--revolut {
+  color: #ffffff;
+  background: rgba(255,255,255,0.06);
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+.why-cmp-mobile-colname {
+  font-size: 0.6875rem;            /* 11px */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.40);
+  display: block;
+}
+
+:lang(gu) .why-cmp-mobile-colname {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Footnote ───────────────────────────────────────────────────────────────── */
+
+.why-cmp-footnote {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.875rem;             /* 14px */
+  line-height: 1.6;
+  color: rgba(255,255,255,0.80);   /* ≥4.5:1 on #032B1A */
+  text-align: center;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .why-photo-img {
+    transition: none;
+    opacity: 1;
+  }
+
+  .why-photo-frame-border {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .why-chip {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .why-cmp-row {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .revolut-dot-pulse {
+    animation: none;
+  }
+
+  .why-card {
+    transition: none;
+  }
+}

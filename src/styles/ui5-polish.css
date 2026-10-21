@@ -1,0 +1,302 @@
+/*
+ * src/styles/ui5-polish.css — Phase UI-5 Premium Polish
+ *
+ * Scope: visual polish, skeleton loaders, noise texture, branded
+ * dividers, marquee pause, accessibility enhancements, empty/error
+ * states. No new hues — locked to THEME-LOCK tokens only.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NOISE TEXTURE — dark / brand-900 sections
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}
+@media (prefers-reduced-motion: reduce) {
+  .noise-overlay::after { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SKELETON LOADERS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes skeleton-wave {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--mist) 25%,
+    var(--brand-100) 50%,
+    var(--mist) 75%
+  );
+  background-size: 800px 100%;
+  animation: skeleton-wave 1.6s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--mist);
+  }
+}
+
+.skeleton-text  { height: 1em;  width: 100%; }
+.skeleton-title { height: 2em;  width: 60%; }
+.skeleton-image { aspect-ratio: 4/3; width: 100%; border-radius: var(--radius-card); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION DIVIDERS — hairline brand motif
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--brand-400) 30%,
+    var(--line) 70%,
+    transparent 100%
+  );
+  opacity: 0.4;
+  margin-block: 0;
+  border: none;
+}
+
+.section-divider-center {
+  width: 80px;
+  height: 3px;
+  background: var(--gradient-cta);
+  border-radius: var(--radius-pill);
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MARQUEE — pause button + reduced motion
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.marquee-wrapper {
+  position: relative;
+}
+
+/* Pause button — always visible for keyboard users */
+.marquee-pause-btn {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.marquee-wrapper:hover .marquee-pause-btn,
+.marquee-wrapper:focus-within .marquee-pause-btn {
+  opacity: 1;
+}
+.marquee-pause-btn:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM EMPTY / ERROR STATES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.form-error-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--gold-500);
+  margin-top: 0.375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  /* Slide-in without shaking — no shake animation */
+  animation: slide-in-down 200ms var(--ease-smooth) both;
+}
+
+@keyframes slide-in-down {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-error-message { animation: none; }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 3rem 1.5rem;
+  color: var(--ink-600);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HOVER / FOCUS / ACTIVE / DISABLED STATES — interactive elements
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Card lift effect */
+.hover-lift {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift:hover { transform: none; }
+}
+
+/* Disabled state */
+[disabled], [aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Link underline draw */
+.link-draw {
+  position: relative;
+  text-decoration: none;
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 250ms var(--ease-smooth);
+}
+.link-draw:hover::after,
+.link-draw:focus-visible::after {
+  width: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .link-draw::after { transition: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION SPACING RHYTHM — consistent vertical scale
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section-py      { padding-block: clamp(4rem, 8vw, 7rem); }
+.section-py-sm   { padding-block: clamp(3rem, 5vw, 5rem); }
+.section-py-lg   { padding-block: clamp(5rem, 10vw, 9rem); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ALTERNATING SECTION BACKGROUNDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.bg-alt-light { background: var(--mist); }
+.bg-alt-white { background: var(--white); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   IMAGE FRAME TREATMENT — consistent photo mask + placeholder
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.img-frame {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--mist);
+  position: relative;
+}
+
+.img-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 400ms var(--ease-smooth);
+}
+.img-frame:hover img {
+  transform: scale(1.03);
+}
+@media (prefers-reduced-motion: reduce) {
+  .img-frame:hover img { transform: none; }
+}
+
+/* Placeholder overlay while image loads */
+.img-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--mist);
+  z-index: 0;
+}
+.img-frame img:not([src]),
+.img-frame img[src=""] {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ACCESSIBLE FOCUS — enhanced rings everywhere
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Suppress outline for mouse clicks */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SKIP TO CONTENT — visible on keyboard focus
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.skip-to-content {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 99999;
+  padding: 0.625rem 1.25rem;
+  background: var(--brand-600);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-200%);
+  transition: transform 200ms ease;
+  text-decoration: none;
+}
+.skip-to-content:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}

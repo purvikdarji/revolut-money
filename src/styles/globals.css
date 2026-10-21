@@ -1,0 +1,252 @@
+/* src/styles/globals.css */
+
+/* ─── Google Fonts ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap');
+
+/* ─── Design Tokens (CSS Custom Properties) ───────────────────────── */
+:root {
+  /* Brand greens */
+  --brand-50:  #F1F8F4;
+  --brand-100: #DFEEE7;
+  --brand-400: #34C27A;
+  --brand-500: #0E9A55;
+  --brand-600: #00773E;  /* Primary – AA-safe on white */
+  --brand-700: #005F31;  /* Hover */
+  --brand-900: #032B1A;  /* Deep sections */
+
+  /* Gold accent – use very sparingly */
+  --gold-300:  #E6CC8A;
+  --gold-500:  #C9A24B;
+
+  /* Ink / Text */
+  --ink-900:   #0A1F16;
+  --ink-600:   #3F5A4C;
+  --ink-400:   #6E8578;
+
+  /* Surface */
+  --line:      #DCE8E1;
+  --mist:      #F6FAF7;
+  --white:     #FFFFFF;
+
+  /* Gradients */
+  --gradient-hero:     radial-gradient(ellipse at 20% 60%, #005F31 0%, transparent 55%),
+                       radial-gradient(ellipse at 80% 20%, #0E9A55 0%, transparent 45%),
+                       #032B1A;
+  --gradient-cta:      linear-gradient(135deg, #00773E 0%, #0E9A55 100%);
+  --gradient-card:     linear-gradient(145deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 100%);
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-gu:      'Noto Sans Gujarati', system-ui, sans-serif;
+
+  /* Radius */
+  --radius-card:   28px;
+  --radius-input:  16px;
+  --radius-pill:   9999px;
+  --radius-sm:     8px;
+
+  /* Shadows */
+  --shadow-card:   0 24px 60px -24px rgba(0, 119, 62, .35);
+  --shadow-glow:   0 0 40px rgba(52, 194, 122, .25);
+  --shadow-md:     0 8px 24px rgba(10, 31, 22, .12);
+  --shadow-sm:     0 2px 8px rgba(10, 31, 22, .08);
+
+  /* Glass */
+  --glass-bg:      rgba(255, 255, 255, .60);
+  --glass-border:  rgba(255, 255, 255, .40);
+  --glass-blur:    16px;
+
+  /* Spacing scale (section padding) */
+  --section-y:     clamp(4rem, 8vw, 8rem);
+  --section-y-sm:  clamp(2rem, 4vw, 4rem);
+
+  /* Container */
+  --container-max: 1280px;
+  --container-px:  clamp(1rem, 4vw, 2rem);
+
+  /* Transitions */
+  --ease-spring:   cubic-bezier(.34, 1.56, .64, 1);
+  --ease-smooth:   cubic-bezier(.4, 0, .2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+
+  /* Focus ring */
+  --focus-ring:    0 0 0 3px rgba(0, 119, 62, .45);
+}
+
+/* ─── Reset & Base ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-900);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Typography Fluid Scale ───────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink-900);
+}
+
+.h1 { font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem); }
+.h2 { font-size: clamp(1.75rem, 3.5vw + .5rem, 3rem); }
+.h3 { font-size: clamp(1.25rem, 2vw + .5rem, 2rem); }
+.h4 { font-size: clamp(1.1rem, 1.5vw + .25rem, 1.5rem); }
+
+p {
+  color: var(--ink-600);
+  line-height: 1.7;
+}
+
+a {
+  color: var(--brand-600);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-smooth);
+}
+a:hover { color: var(--brand-700); }
+
+img, svg { display: block; max-width: 100%; }
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ─── Selection ────────────────────────────────────────────────────── */
+::selection {
+  background: var(--brand-400);
+  color: var(--white);
+}
+
+/* ─── Focus ────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Scrollbar (Webkit) ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--mist); }
+::-webkit-scrollbar-thumb { background: var(--brand-400); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-600); }
+
+/* ─── Container ────────────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-px);
+}
+
+/* ─── Section spacing ──────────────────────────────────────────────── */
+.section { padding-block: var(--section-y); }
+.section-sm { padding-block: var(--section-y-sm); }
+
+/* ─── Eyebrow ──────────────────────────────────────────────────────── */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--brand-600);
+}
+
+/* ─── Glass morphism utility ───────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+/* ─── Card frame ───────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--line);
+}
+.card-glass {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* ─── Gradient text ────────────────────────────────────────────────── */
+.gradient-text {
+  background: var(--gradient-cta);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Animate only transform/opacity ──────────────────────────────── */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* ─── Gujarati font override ───────────────────────────────────────── */
+:lang(gu), .font-gu {
+  font-family: var(--font-gu);
+}
+
+/* ─── Reduced motion ───────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Scroll progress bar ──────────────────────────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--gradient-cta);
+  z-index: 9999;
+  transition: width .1s linear;
+}
+
+/* ─── Page transition ──────────────────────────────────────────────── */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--duration-base) var(--ease-smooth),
+              transform var(--duration-base) var(--ease-smooth);
+}
+
+/* ─── Safe area helpers (floating bar) ─────────────────────────────── */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.mb-safe { margin-bottom: env(safe-area-inset-bottom, 0px); }

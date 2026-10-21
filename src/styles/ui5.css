@@ -1,0 +1,57 @@
+/* Phase UI-5 motion utilities */
+
+/* Drifting Gradient Mesh */
+@keyframes mesh-drift {
+  0% { transform: scale(1) translate(0, 0) rotate(0deg); }
+  33% { transform: scale(1.1) translate(2%, 2%) rotate(2deg); }
+  66% { transform: scale(1.05) translate(-1%, 3%) rotate(-1deg); }
+  100% { transform: scale(1) translate(0, 0) rotate(0deg); }
+}
+
+@utility animate-mesh-drift {
+  animation: mesh-drift 20s ease-in-out infinite;
+}
+
+@keyframes mesh-drift-alt {
+  0% { transform: scale(1) translate(0, 0) rotate(0deg); }
+  33% { transform: scale(1.05) translate(-2%, -1%) rotate(-2deg); }
+  66% { transform: scale(1.1) translate(1%, -3%) rotate(1deg); }
+  100% { transform: scale(1) translate(0, 0) rotate(0deg); }
+}
+
+@utility animate-mesh-drift-alt {
+  animation: mesh-drift-alt 25s ease-in-out infinite;
+}
+
+/* Floating offset frame */
+@keyframes float-offset {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@utility animate-float-offset {
+  animation: float-offset 6s ease-in-out infinite;
+}
+
+/* Skeleton Shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@utility animate-shimmer {
+  background: linear-gradient(90deg, var(--color-mist) 25%, var(--color-white) 50%, var(--color-mist) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Fallbacks for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-mesh-drift,
+  .animate-mesh-drift-alt,
+  .animate-float-offset,
+  .animate-shimmer {
+    animation: none !important;
+    transform: none !important;
+  }
+}

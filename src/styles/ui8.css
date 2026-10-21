@@ -1,0 +1,330 @@
+/*
+ * src/styles/ui8.css — Phase UI-8 Mobile-First Design
+ *
+ * Rules:
+ *   - Mobile viewport: 320–768px, portrait & landscape, en & gu
+ *   - All tap targets ≥ 44px (48px recommended)
+ *   - No text below 13px
+ *   - Natural scroll on touch; no parallax, no large blurs on mobile
+ *   - dvh/svh units; safe-area insets; keyboard-aware
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SNAP RAILS — shared horizontal scrollable list pattern
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Shared snap rail container */
+.snap-rail {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 1rem;
+  padding-bottom: 1.25rem; /* room for scroll indicator */
+  /* Edge-bleed with safe viewing */
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+}
+
+.snap-rail::-webkit-scrollbar { display: none; }
+
+/* Each snap card */
+.snap-card {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  width: 85vw;
+  max-width: 360px;
+}
+
+/* On desktop: revert to normal flow */
+@media (min-width: 768px) {
+  .snap-rail {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+  .snap-card {
+    width: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION SPACING — tighter on mobile
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 639px) {
+  section {
+    padding-block: 3.5rem;
+  }
+  /* Reduce heading sizes slightly for 320px */
+  .h1 { font-size: clamp(1.875rem, 8vw + 0.5rem, 4.5rem); }
+  .h2 { font-size: clamp(1.5rem, 6vw + 0.5rem, 3rem); }
+  .h3 { font-size: clamp(1.25rem, 4vw + 0.25rem, 2rem); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAP TARGETS — enforce min 44px on all interactive elements
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (pointer: coarse) {
+  button,
+  [role="button"],
+  a,
+  input[type="checkbox"],
+  input[type="radio"],
+  select {
+    min-height: 44px;
+  }
+  
+  /* Inputs should be 48px on touch */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  input[type="url"],
+  select,
+  textarea {
+    font-size: 16px; /* Prevents iOS auto-zoom on focus */
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PARALLAX & HEAVY EFFECTS — disable on touch/mobile
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (pointer: coarse) {
+  /* Kill backdrop-blur on low-end glass elements */
+  .glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.97);
+  }
+  
+  /* Kill spotlight hover effects (cursor-only) */
+  .loan-card-spotlight::after { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOTTOM BAR SPACE — pages need bottom padding to clear the sticky bar
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  /* Main content area must clear the sticky bottom bar (56px + safe-area) */
+  main {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ARTICLES / INSIGHTS SNAP RAIL — mobile horizontal
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.insights-snap-rail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .insights-snap-rail {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+  }
+  .insights-snap-rail::-webkit-scrollbar { display: none; }
+  .insights-snap-rail > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    width: 82vw;
+    max-width: 340px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STICKY IN-PAGE CHIPS — section navigation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.section-chip-bar {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0.5rem 1rem;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: var(--header-h, 72px);
+  z-index: 30;
+  background: rgba(246, 250, 247, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+}
+
+.section-chip-bar::-webkit-scrollbar { display: none; }
+
+.section-chip {
+  flex-shrink: 0;
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background: var(--surface-card);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink-600);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 150ms, color 150ms, border-color 150ms;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.section-chip.active,
+.section-chip:hover {
+  background: var(--brand-100);
+  color: var(--brand-700);
+  border-color: var(--brand-200, var(--brand-100));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEGMENTED CONTROL — replaces wide tab rows on mobile
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Tabs that become segmented controls on mobile */
+@media (max-width: 639px) {
+  .tab-row-responsive {
+    display: inline-flex;
+    background: var(--mist);
+    padding: 3px;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    overflow-x: auto;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
+  .tab-row-responsive::-webkit-scrollbar { display: none; }
+  .tab-row-responsive [role="tab"] {
+    white-space: nowrap;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    border-radius: 9999px;
+    min-height: 36px;
+    flex-shrink: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPACT HORIZONTAL CARDS — dense lists on mobile
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.compact-card-mobile {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: var(--surface-card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  min-height: 72px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KEYBOARD SAFETY — prevent bottom bar covering focused inputs
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* When a form input is focused, we rely on JS (FloatingElements.tsx) to
+   hide the bar. This CSS handles smooth transitions for those states. */
+.mobile-bar-hidden {
+  transform: translateY(100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DRAWER / SHEET — Mobile modal overlay (used with Modal.tsx)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Overscroll contain on the sheet body to prevent page scroll */
+.sheet-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LANDSCAPE ORIENTATION — tighten vertical rhythm
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  section {
+    padding-block: 2rem;
+  }
+  .page-header-band {
+    padding-block: 3rem 2rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GUJARATI TEXT — no letter-spacing, no uppercase, lh ≥ 1.65
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:lang(gu) .eyebrow,
+.font-gu .eyebrow {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:lang(gu) p,
+.font-gu p {
+  line-height: 1.7;
+}
+
+:lang(gu) .snap-card,
+.font-gu .snap-card {
+  /* Gujarati script needs slightly more vertical room */
+  min-height: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FONT SCALING SURVIVAL — 130% and 200% user font scale
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Ensure containers don't overflow when user scales fonts */
+.container,
+[class*="max-w-"] {
+  max-width: min(100%, var(--container-max, 1280px));
+}
+
+/* Stat frames must not clip at large font scales */
+.stat-frame-tile {
+  min-height: 80px;
+  height: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — honor system preference strictly
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .snap-rail {
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
+  .trust-ticker-inner {
+    animation: none;
+  }
+}

@@ -1,0 +1,58 @@
+/**
+ * src/styles/ui4.css
+ *
+ * Phase UI-4 — Design System Upgrades
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. UTILITIES & ELEVATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+.shadow-elev-0 { box-shadow: var(--elev-0); }
+.shadow-elev-1 { box-shadow: var(--elev-1); }
+.shadow-elev-2 { box-shadow: var(--elev-2); }
+.shadow-elev-3 { box-shadow: var(--elev-3); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. CARD SPOTLIGHT (from UI-3 logic)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.card-spotlight {
+  position: relative;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      800px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
+      rgba(255, 255, 255, 0.5),
+      transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    mix-blend-mode: soft-light;
+  }
+  .card-spotlight:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. INPUTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ui4-success-icon {
+  opacity: 1;
+}
+
+input:focus ~ label,
+select:focus ~ label,
+textarea:focus ~ label,
+input:not(:placeholder-shown) ~ label,
+textarea:not(:placeholder-shown) ~ label {
+  top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--brand-600);
+}
